@@ -89,8 +89,8 @@
 										      	onclick="$('.temporada').hide();
 										      	$('#serie-@serie.getId-t-@temporada').toggle(500);" title="Ver episódios da temporada @temporada">@temporada</a>
 										      	Próximo episódio: 
-										      		@if(serie.getProximoEpisodio(temporada) != null) {
-										      			@serie.getProximoEpisodio(temporada).getNome
+										      		@if(serie.getProximoEp(new Antigo())!= null) {
+										      			@serie.getProximoEp(new Antigo()).getNome
 										      		}
 										      		<br />
 									    	}
