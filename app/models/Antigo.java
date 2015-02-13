@@ -1,44 +1,34 @@
-package com;
+package models;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Antigo extends Strategy{
+/**
+ * Created by X on 11/02/2015.
+ */
+public class Antigo extends Strategy {
+    @Override
+    public Episodio getProximoEpisodio(Serie serie) {
+        for (int i = 1; i <= serie.getTotalDeTemporadas(); i ++){
+            if (serie.isTemporadaAssistidaIncompleta(i)){
 
-	public Episodio getProximoEp(Serie s) {
-		int index = getTemp(s);
-		if(index!=-1){
-			return getProximoEpNaoAssistido(s, index);
-		}
-		return null;
-	}
-	
-
-	public Episodio getProximoEpNaoAssistido(Serie s, int temporada){
-		List<Episodio> eps = s.getEpisodios(temporada);
-		int index = -1;
-
-		for(int i=0; i<eps.size();i++){
-			if(!(eps.get(i).isAssistido())){
-				index=i;
-				return eps.get(index);
-			}
-		}
-		return null;
-		
-	}
-
-	public int getTemp(Serie s){
-		int index = -1;
-		int totalTemp = s.getTemporadas().size();
-		for(int i=1; i<=totalTemp; i++){
-			if(s.isTemporadaNaoAssistida(i) || s.isTemporadaAssistidaIncompleta(i)){
-				index = i;
-				return index;
-			}
-		}
-		System.out.println("INDEX:"+index);
-		return index;
-	}
-
+                    List<Episodio> eps = serie.getEpisodios(i);
+                    int j = 0;
+                    int index = -1;
+                    while (j < eps.size()) {
+                        if(eps.get(j).isAssistido()) {
+                            index = j;
+                        }
+                        j++;
+                    }
+                    if(index == -1) return eps.get(0);
+                    return eps.get(index + 1);
+            }else{
+                if (serie.isTemporadaNaoAssistida(i)){
+                    List<Episodio> eps = serie.getEpisodios(i);
+                    return eps.get(0);
+                }
+            }
+        }
+        return super.getProximoEpisodio(serie);
+    }
 }

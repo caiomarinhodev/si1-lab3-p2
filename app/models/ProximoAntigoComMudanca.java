@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by X on 11/02/2015.
  */
-public class ProximoAntigoComMudanca extends ProximoMaisAntigo {
+public class ProximoAntigoComMudanca extends Antigo {
 
     @Override
     public Episodio getProximoEpisodio(Serie serie) {

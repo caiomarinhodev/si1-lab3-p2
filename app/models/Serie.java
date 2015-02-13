@@ -19,7 +19,7 @@ public class Serie implements Comparable<Serie> {
 
 	private String nome;
 	private boolean status;
-    private TipoDoProximo tipoDoProximo;
+    private Strategy tipoDoProximo;
 	
 	@OneToMany(mappedBy = "serie")
 	private List<Episodio> episodios;
@@ -41,9 +41,9 @@ public class Serie implements Comparable<Serie> {
 		this.nome = nome;
 	}
 
-    public TipoDoProximo getTipoDoProximo() {return tipoDoProximo;}
+    public Strategy getTipoDoProximo() {return tipoDoProximo;}
 
-    public void setTipoDoProximo (TipoDoProximo tipoDoProximo){ this.tipoDoProximo = tipoDoProximo; }
+    public void setTipoDoProximo (Strategy tipoDoProximo){ this.tipoDoProximo = tipoDoProximo; }
 	
 	public boolean isAssistindo() {
 		return status;

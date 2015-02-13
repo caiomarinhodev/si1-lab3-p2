@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by X on 11/02/2015.
  */
-public class Proximo extends TipoDoProximo {
+public class Proximo extends Strategy {
 
     @Override
     public Episodio getProximoEpisodio(Serie serie) {

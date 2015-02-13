@@ -1,7 +1,16 @@
-package com;
+package models;
 
-public abstract class Strategy {
-	
-	public abstract Episodio getProximoEp(Serie s);
+import javax.persistence.Entity;
+import java.io.Serializable;
 
+
+/**
+ * Created by X on 11/02/2015.
+ */
+
+public abstract class Strategy implements Serializable{
+
+    public Episodio getProximoEpisodio(Serie serie) {
+        return null;
+    }
 }

@@ -42,7 +42,7 @@ public class Application extends Controller {
                 serie.setTipoDoProximo(new Proximo());
             }else{
                 if (tipoProximo.equals("Mais Antigo")){
-                    serie.setTipoDoProximo(new ProximoMaisAntigo());
+                    serie.setTipoDoProximo(new Antigo());
                 }else{
                     serie.setTipoDoProximo(new ProximoAntigoComMudanca());
                 }
