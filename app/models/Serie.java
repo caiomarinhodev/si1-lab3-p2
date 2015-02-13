@@ -19,6 +19,7 @@ public class Serie implements Comparable<Serie> {
 
 	private String nome;
 	private boolean status;
+    private TipoDoProximo tipoDoProximo;
 	
 	@OneToMany(mappedBy = "serie")
 	private List<Episodio> episodios;
@@ -39,88 +40,70 @@ public class Serie implements Comparable<Serie> {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
+    public TipoDoProximo getTipoDoProximo() {return tipoDoProximo;}
+
+    public void setTipoDoProximo (TipoDoProximo tipoDoProximo){ this.tipoDoProximo = tipoDoProximo; }
 	
 	public boolean isAssistindo() {
 		return status;
 	}
 
 	public void mudaStatus() {
-		if(this.status){
-			this.status = false;
-		} else {
-			this.status = true;
-		}
+		if(this.status) this.status = false;
+		else this.status = true;
 	}
 	
 	public boolean hasTemporadaAssistidaCompleta() {
 		for (int i = 1; i <= getTotalDeTemporadas(); i++) {
-			if(isTemporadaAssistidaCompleta(i)){
-				return true;
-			}
+			if(isTemporadaAssistidaCompleta(i)) return true;
 		}
 		return false;
 	}
 	
 	public boolean hasTemporadaAssistidaIncompleta() {
 		for (int i = 1; i <= getTotalDeTemporadas(); i++) {
-			if(isTemporadaAssistidaIncompleta(i)){
-				return true;
-			}
+			if(isTemporadaAssistidaIncompleta(i)) return true;
 		}
 		return false;
 	}
 	
 	public boolean hasTemporadaNaoAssistida() {
 		for (int i = 1; i <= getTotalDeTemporadas(); i++) {
-			if(isTemporadaNaoAssistida(i)){
-				return true;
-			}
+			if(isTemporadaNaoAssistida(i)) return true;
 		}
 		return false;
 	}
 	public boolean isTemporadaAssistidaCompleta(int temporada) {
 		List<Episodio> temp = getEpisodios(temporada);
 		for (int i = 0; i < temp.size(); i++) {
-			if(!temp.get(i).isAssistido()) {
-				return false;
-			}
+			if(!temp.get(i).isAssistido()) return false;
 		}
 		return true;
 	}
 	
 	public boolean isTemporadaAssistidaIncompleta(int temporada) {
-		if(isTemporadaAssistidaCompleta(temporada)){
-			return false;
-		}
-		
-		if(isTemporadaNaoAssistida(temporada)) {
-			return false;
-		}
+		if(isTemporadaAssistidaCompleta(temporada)) return false;
+		if(isTemporadaNaoAssistida(temporada)) return false;
 		return true;
 	}
 	
 	public boolean isTemporadaNaoAssistida(int temporada) {
 		List<Episodio> temp = getEpisodios(temporada);
 		for (int i = 0; i < temp.size(); i++) {
-			if(temp.get(i).isAssistido()){
-				return false;
-			}
+			if(temp.get(i).isAssistido()) return false;
 		}
 		return true;
 	}
 	
-	public Episodio getProximoEp(Strategy st) {
-		return st.getProximoEp(this);
+	public Episodio getProximoEpisodio() {
+		return getTipoDoProximo().getProximoEpisodio(this);
 	}
-
-	
 	
 	public List<Integer> getTemporadas() {
 		List<Integer> result = new ArrayList<Integer>();
 		for (int i = 0; i < this.episodios.size(); i++) {
-			if(!result.contains(episodios.get(i).getTemporada())){
-				result.add(episodios.get(i).getTemporada());
-			}
+			if(!result.contains(episodios.get(i).getTemporada())) result.add(episodios.get(i).getTemporada());
 		}
 		return result;
 	}
@@ -140,9 +123,7 @@ public class Serie implements Comparable<Serie> {
 	public List<Episodio> getEpisodios(int temporada) {
 		List<Episodio> temp = new ArrayList<Episodio>();
 		for (int i = 0; i < this.episodios.size(); i++) {
-			if(episodios.get(i).getTemporada() == temporada) {
-				temp.add(episodios.get(i));
-			}
+			if(episodios.get(i).getTemporada() == temporada) temp.add(episodios.get(i));
 		}
 		return temp;
 	}
@@ -158,9 +139,7 @@ public class Serie implements Comparable<Serie> {
 	public int getTotalDeEpisodiosAssistidos() {
 		int cont = 0;
 		for (int i = 0; i < this.episodios.size(); i++) {
-			if(episodios.get(i).isAssistido()) {
-				cont++;
-			}
+			if(episodios.get(i).isAssistido()) cont++;
 		}
 		return cont;
 	}

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import models.Episodio;
-import models.GenericDAO;
-import models.Serie;
+import models.*;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.db.jpa.Transactional;
@@ -23,12 +21,8 @@ public class Application extends Controller {
 		List<Serie> seriesAssistir = new ArrayList<Serie>(); 
 		List<Serie> seriesAssistindo = new ArrayList<Serie>();
 		for (int i = 0; i < series.size(); i++) {
-			
-			if(series.get(i).isAssistindo()) {
-				seriesAssistindo.add(series.get(i));
-			} else {
-				seriesAssistir.add(series.get(i));
-			}
+			if(series.get(i).isAssistindo()) seriesAssistindo.add(series.get(i));
+			else seriesAssistir.add(series.get(i));
 		}
 		Collections.sort(seriesAssistir);
 		Collections.sort(seriesAssistindo);
@@ -40,8 +34,21 @@ public class Application extends Controller {
 		
 		DynamicForm requestData = Form.form().bindFromRequest();
 		Long id = Long.parseLong(requestData.get("id"));
-		
-		Serie serie = dao.findByEntityId(Serie.class, id);
+		String tipoProximo = requestData.get("proximo");
+        Serie serie = dao.findByEntityId(Serie.class, id);
+
+        if (tipoProximo != null){
+            if (tipoProximo.equals("Seguinte")){
+                serie.setTipoDoProximo(new Proximo());
+            }else{
+                if (tipoProximo.equals("Mais Antigo")){
+                    serie.setTipoDoProximo(new ProximoMaisAntigo());
+                }else{
+                    serie.setTipoDoProximo(new ProximoAntigoComMudanca());
+                }
+            }
+        }
+
 		serie.mudaStatus();
 
         return redirect("/#serie-" + id);
